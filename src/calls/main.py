@@ -20,7 +20,7 @@ Observation: the result of the action
 Thought: I now know the final answer
 Final Answer: A bullet-point list of potential customer segments.
 
-Provide the final answer by starting with "My suggestion is..."
+Provide the final answer as just a bullet-point list.
 
 Begin!
 

@@ -1,25 +1,80 @@
 from langchain_openai import ChatOpenAI
-from src.calls.main import create_agent, invoke_agent
-from src.calls.tools.think import think
-from src.calls.constants import API_KEY
 import streamlit as st
+from src.calls.constants import API_KEY, CONTEXT
+from langchain_core.prompts import PromptTemplate
+from langchain.schema import StrOutputParser
+from operator import itemgetter
+from langchain.globals import set_debug
+
+set_debug(True)
 
 # Define the task for generating a solution
-TASK = "Generate a comprehensive solution that can be built into a business for the given problem, customer segments, and existing alternatives. Provide a detailed description of the solution."
+
+TASK1 = CONTEXT + """
+Problem: {problem}
+Customer segments:
+```
+{customer_segments}
+```
+
+Existing alternatives:
+```
+{existing_alternatives}
+```
+
+Write down your thoughts on how you would create a business that solves the problem for the customer segments, & is different from the alternatives.
+
+"""
+
+TASK2 = CONTEXT + """ 
+
+Problem: {problem}
+Customer segments:
+```
+{customer_segments}
+```
+Thoughts: 
+```
+{thoughts}
+```
+
+
+
+Generate a comprehensive description based of the business that's thought about. The business will solve the given problem for the given customer segments.
+Your description should be about 4 short sentences.
+"""
+
 
 # Initialize the language model
-llm = ChatOpenAI(
+llm1 = ChatOpenAI(
     api_key=API_KEY,
+    temperature=1,
     model="gpt-4o-mini",
-    temperature=0.7
+    max_retries=0,
 )
 
-# Create the agent for generating solutions
-agent = create_agent(
-    llm,
-    [think],  # You can add more tools if necessary
-    TASK
+llm2 = ChatOpenAI(
+    api_key=API_KEY,
+    temperature=0.7,
+    model="gpt-4o-mini",
+    max_retries=0,
 )
+
+
+# Create a prompt template from the task
+prompt1 = PromptTemplate.from_template(TASK1)
+prompt2 = PromptTemplate.from_template(TASK2)
+
+
+# Create a chain that includes the prompt and language model
+
+chain1 = prompt1 | llm1 | StrOutputParser()
+
+chain = ({
+    "problem": itemgetter("problem"),
+    "customer_segments": itemgetter("customer_segments"),
+    "thoughts": chain1
+} | prompt2 | llm2 | StrOutputParser())
 
 def generate_solution(
     problem: str,
@@ -38,15 +93,15 @@ def generate_solution(
         str: A detailed description of the generated solution.
     """
     # Display a message in the Streamlit app
-    st.markdown("## Generating a solution..")
-    
-    # Prepare the input for the agent
+    st.markdown("## Generating a solution..") 
+
+    # Prepare the input for the chain
     input_data = {
         "problem": problem,
         "customer_segments": customer_segments,
         "existing_alternatives": existing_alternatives
     }
     
-    # Invoke the agent with the problem, customer segments, and existing alternatives
-    response = invoke_agent(agent, input_data)
+    # Invoke the chain with the input data
+    response = chain.invoke(input_data)
     return response  # Return the generated solution as a string

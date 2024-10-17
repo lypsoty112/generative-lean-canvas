@@ -9,7 +9,8 @@ from langchain_core.tools import Tool
 
 
 # Define the task for generating existing alternatives
-TASK = "Identify existing alternatives for the given problem and customer segments. Make sure to use both tools at least once. Provide a bullet-point list of these alternatives."
+TASK = """Identify existing alternatives for the given problem and customer segments. 
+Provide a bullet-point list of these alternatives. Do this by researching 1 possible alternative at a time, and cultivating your list like that. """
 
 
 search = GoogleSerperAPIWrapper(
@@ -20,8 +21,7 @@ search = GoogleSerperAPIWrapper(
 
 # Initialize the tools
 tools = [
-    think,
-        Tool(
+    Tool(
         name="search-tool",
         func=search.run,
         description="useful for when you need to search any information.",
@@ -32,7 +32,7 @@ tools = [
 llm = ChatOpenAI(
     api_key=API_KEY,
     model="gpt-4o-mini",
-    temperature=0.7
+    temperature=1
 )
 
 # Create the agent
