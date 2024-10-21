@@ -25,7 +25,7 @@ Customer segments:
 ```
 
 Of these segments, select the 5 most logical customer segments for the provided problem. You're also allowed to add other segments if you see fit.
-Provide only the list as a numbered list:
+Provide only the list as a Markdown numbered list:
 """
 
 chain = None

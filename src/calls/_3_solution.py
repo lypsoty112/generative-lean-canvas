@@ -38,7 +38,7 @@ Thoughts:
 
 
 Generate a comprehensive description based of the business that's thought about. The business will solve the given problem for the given customer segments.
-Your description should be about 4 short sentences.
+Your description should be about 4 short sentences. Use Markdown formatting.
 """
 
 chain = None

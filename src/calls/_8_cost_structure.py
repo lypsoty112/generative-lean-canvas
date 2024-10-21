@@ -88,7 +88,7 @@ Reasoning:
 ---
 # TASK
 Take the provided cost structure for this business & reason through the logic & attempt to come to a more logical or reasonable conclusion.
-Write down the cost optimized structure in exactly 1 paragraph. Start with "The cost structure includes: ..."
+Write down the cost optimized structure in exactly 1 paragraph. Start with "The cost structure includes: ...". Use Markdown formatting.
 {format_instructions}
 """
 

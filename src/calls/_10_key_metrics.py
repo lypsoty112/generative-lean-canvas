@@ -108,7 +108,7 @@ Reasoning:
 ---
 # TASK
 Take the provided key metrics for this business & reason through the logic & attempt to come to a more logical or reasonable conclusion.
-Start with "Key metrics include: ..." and include relevant metrics for this business. Make sure it's about 1 paragraph.
+Start with "Key metrics include: ..." and include relevant metrics for this business. Make sure it's about 1 paragraph. Use Markdown formatting.
 {format_instructions}
 """
 

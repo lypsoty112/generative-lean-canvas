@@ -78,6 +78,8 @@ Reasoning:
 ---
 # TASK
 Take the provided early adopters segment(s) and reason through the logic. Attempt to refine or add detail to the early adopters' characteristics, behaviors, and needs. Provide a paragraph to describe the customers. Start with "Early adopters include: ..."
+Provide your final answer as a short answer of about 2 sentences. Use Markdown formatting.
+
 
 {format_instructions}
 """

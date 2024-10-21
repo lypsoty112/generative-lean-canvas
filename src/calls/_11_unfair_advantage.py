@@ -118,7 +118,7 @@ Reasoning:
 ---
 # TASK
 Take the provided unfair advantage for this business & reason through the logic. Attempt to refine or enhance the unfair advantage to be more compelling.  Start with "Our unfair advantage is: ..."
-
+Provide your final answer as a short answer of about 2 sentences. Use Markdown formatting.
 {format_instructions}
 """
 

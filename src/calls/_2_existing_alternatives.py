@@ -11,7 +11,7 @@ from langchain_core.tools import Tool
 # Define the task for generating existing alternatives
 TASK = """Identify existing alternatives for the given problem and customer segments. 
 Provide a bullet-point list of these alternatives. Do this by researching 1 possible alternative at a time, and cultivating your list like that.
-Provide your final answer as a short answer of about 2 sentences.
+Provide your final answer as a short answer of about 2 sentences. Use Markdown formatting
  """
 
 

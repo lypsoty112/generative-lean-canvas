@@ -23,7 +23,7 @@ Examples:
 - ...
 
 Provide a short, high-level concept describing the business idea. I've provided some examples.
-Only provide the high-level concept
+Only provide the high-level concept. 
 
 
 high-level concept:

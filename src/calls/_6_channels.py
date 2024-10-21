@@ -65,6 +65,7 @@ Reasoning:
 ```
 
 Take the provided channel strategy for this business & reason through the logic & attempt to come to a more logical or reasonable conclusion.
+Provide your final answer as a short answer of about 2 sentences. Use Markdown formatting
 
 {format_instructions}
 """
