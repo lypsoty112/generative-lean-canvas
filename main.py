@@ -150,9 +150,9 @@ def main():
     # Generate button
     if st.button("Generate Lean Canvas"):
         if not st.session_state.form_data["Problem"]:
-            st.error("Error: The 'Problem' field is required.")
+            st.toast("🚫 Error: The 'Problem' field is required.")
         elif not st.session_state["KEY"]:
-            st.error("Error: No API key has been given.")
+            st.toast("🚫 Error: No API key has been given.")
         else:
             # Call the generate method and pass in the form data
             build(st.session_state["KEY"])
