@@ -5,11 +5,6 @@ from src.calls.constants import API_KEY, CONTEXT
 from langchain_core.prompts import PromptTemplate
 from langchain.schema import StrOutputParser
 from operator import itemgetter
-from langchain.schema.runnable import RunnablePassthrough
-from langchain_core.callbacks import StdOutCallbackHandler
-from langchain.globals import set_debug
-
-set_debug(True)
 
 
 TASK1 = CONTEXT + """
@@ -33,41 +28,44 @@ Of these segments, select the 5 most logical customer segments for the provided 
 Provide only the list as a numbered list:
 """
 
-llm1 = ChatOpenAI(
-    api_key=API_KEY,
-    temperature=1,
-    model="gpt-4o-mini",
-    max_retries=0,
+chain = None
+
+def build():
+    global chain
+    llm1 = ChatOpenAI(
+        api_key=API_KEY,
+        temperature=1,
+        model="gpt-4o-mini",
+        max_retries=0,
 
 
-)
-llm2 = ChatOpenAI(
-    api_key=API_KEY,
-    temperature=.4,
-    model="gpt-4o-mini",
-    
-)
+    )
+    llm2 = ChatOpenAI(
+        api_key=API_KEY,
+        temperature=.4,
+        model="gpt-4o-mini",
+        
+    )
 
-prompt1 = PromptTemplate.from_template(
-    TASK1,
-)
-prompt2 = PromptTemplate.from_template(
-    TASK2,
-)
+    prompt1 = PromptTemplate.from_template(
+        TASK1,
+    )
+    prompt2 = PromptTemplate.from_template(
+        TASK2,
+    )
 
-chain1 = prompt1 | llm1 | StrOutputParser()
+    chain1 = prompt1 | llm1 | StrOutputParser()
 
-chain = ({
-    "segments": chain1,
-    "problem": itemgetter("problem")
-} | prompt2 | llm2| StrOutputParser())
+    chain = ({
+        "segments": chain1,
+        "problem": itemgetter("problem")
+    } | prompt2 | llm2| StrOutputParser())
 
 
 
 def generate_customer_segments(
         problem: str
 ) -> str:
-    st.markdown("## Thinking about customer segments..")
     response = chain.invoke({
         "problem": problem,
     })

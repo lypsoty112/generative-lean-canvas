@@ -29,18 +29,21 @@ Only provide the high-level concept
 high-level concept:
 """
 
+chain = None
 
-llm1 = ChatOpenAI(
-    api_key=API_KEY,
-    temperature=0.1,
-    model="gpt-4o-mini",
-    max_retries=0,
-)
+def build():
+    global chain
+    llm1 = ChatOpenAI(
+        api_key=API_KEY,
+        temperature=0.1,
+        model="gpt-4o-mini",
+        max_retries=0,
+    )
 
-prompt = PromptTemplate.from_template(PROMPT)
+    prompt = PromptTemplate.from_template(PROMPT)
 
 
-chain = prompt | llm1 | StrOutputParser()
+    chain = prompt | llm1 | StrOutputParser()
 
 def generate_high_level_concept(
     problem: str,

@@ -35,7 +35,7 @@ def create_agent(
     prompt = PromptTemplate.from_template(task + "\n\n" + PROMPT)
     
     agent = create_react_agent(llm, tools, prompt)
-    return AgentExecutor(agent=agent, tools=tools, verbose=True, max_iterations=10, max_execution_time=120)
+    return AgentExecutor(agent=agent, tools=tools, verbose=False, max_iterations=50, max_execution_time=120)
 
 
 def invoke_agent(

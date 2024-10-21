@@ -26,18 +26,20 @@ Write down this business' unique value proposition in exactly 1 sentence of 10 w
 Unique value proposition:
 """
 
+chain = None
+def build():
+    global chain
+    llm1 = ChatOpenAI(
+        api_key=API_KEY,
+        temperature=0.75,
+        model="gpt-4o-mini",
+        max_retries=0,
+    )
 
-llm1 = ChatOpenAI(
-    api_key=API_KEY,
-    temperature=0.75,
-    model="gpt-4o-mini",
-    max_retries=0,
-)
-
-prompt = PromptTemplate.from_template(PROMPT)
+    prompt = PromptTemplate.from_template(PROMPT)
 
 
-chain = prompt | llm1 | StrOutputParser()
+    chain = prompt | llm1 | StrOutputParser()
 
 
 def generate_unique_value_proposition(

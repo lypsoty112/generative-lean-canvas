@@ -4,9 +4,6 @@ from src.calls.constants import API_KEY, CONTEXT
 from langchain_core.prompts import PromptTemplate
 from langchain.schema import StrOutputParser
 from operator import itemgetter
-from langchain.globals import set_debug
-
-set_debug(True)
 
 # Define the task for generating a solution
 
@@ -44,37 +41,40 @@ Generate a comprehensive description based of the business that's thought about.
 Your description should be about 4 short sentences.
 """
 
+chain = None
 
-# Initialize the language model
-llm1 = ChatOpenAI(
-    api_key=API_KEY,
-    temperature=1,
-    model="gpt-4o-mini",
-    max_retries=0,
-)
+def build():
+    global chain
+    # Initialize the language model
+    llm1 = ChatOpenAI(
+        api_key=API_KEY,
+        temperature=1,
+        model="gpt-4o-mini",
+        max_retries=0,
+    )
 
-llm2 = ChatOpenAI(
-    api_key=API_KEY,
-    temperature=0.7,
-    model="gpt-4o-mini",
-    max_retries=0,
-)
-
-
-# Create a prompt template from the task
-prompt1 = PromptTemplate.from_template(TASK1)
-prompt2 = PromptTemplate.from_template(TASK2)
+    llm2 = ChatOpenAI(
+        api_key=API_KEY,
+        temperature=0.7,
+        model="gpt-4o-mini",
+        max_retries=0,
+    )
 
 
-# Create a chain that includes the prompt and language model
+    # Create a prompt template from the task
+    prompt1 = PromptTemplate.from_template(TASK1)
+    prompt2 = PromptTemplate.from_template(TASK2)
 
-chain1 = prompt1 | llm1 | StrOutputParser()
 
-chain = ({
-    "problem": itemgetter("problem"),
-    "customer_segments": itemgetter("customer_segments"),
-    "thoughts": chain1
-} | prompt2 | llm2 | StrOutputParser())
+    # Create a chain that includes the prompt and language model
+
+    chain1 = prompt1 | llm1 | StrOutputParser()
+
+    chain = ({
+        "problem": itemgetter("problem"),
+        "customer_segments": itemgetter("customer_segments"),
+        "thoughts": chain1
+    } | prompt2 | llm2 | StrOutputParser())
 
 def generate_solution(
     problem: str,
@@ -93,7 +93,6 @@ def generate_solution(
         str: A detailed description of the generated solution.
     """
     # Display a message in the Streamlit app
-    st.markdown("## Generating a solution..") 
 
     # Prepare the input for the chain
     input_data = {

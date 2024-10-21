@@ -10,37 +10,43 @@ from langchain_core.tools import Tool
 
 # Define the task for generating existing alternatives
 TASK = """Identify existing alternatives for the given problem and customer segments. 
-Provide a bullet-point list of these alternatives. Do this by researching 1 possible alternative at a time, and cultivating your list like that. """
+Provide a bullet-point list of these alternatives. Do this by researching 1 possible alternative at a time, and cultivating your list like that.
+Provide your final answer as a short answer.
+ """
 
 
-search = GoogleSerperAPIWrapper(
-        serper_api_key=SERPER_API_KEY
+agent = None
+
+def build():
+    global agent
+    search = GoogleSerperAPIWrapper(
+            serper_api_key=SERPER_API_KEY
+        )
+
+
+
+    # Initialize the tools
+    tools = [
+        Tool(
+            name="search-tool",
+            func=search.run,
+            description="useful for when you need to search any information.",
+        )
+    ]
+
+    # Set up the language model
+    llm = ChatOpenAI(
+        api_key=API_KEY,
+        model="gpt-4o-mini",
+        temperature=1
     )
 
-
-
-# Initialize the tools
-tools = [
-    Tool(
-        name="search-tool",
-        func=search.run,
-        description="useful for when you need to search any information.",
-    )
-]
-
-# Set up the language model
-llm = ChatOpenAI(
-    api_key=API_KEY,
-    model="gpt-4o-mini",
-    temperature=1
-)
-
-# Create the agent
-agent = create_agent(
-    llm,
-    tools,
-    TASK
-)
+    # Create the agent
+    agent = create_agent(
+        llm,
+        tools,
+        TASK
+    )   
 
 def generate_existing_alternatives(
     problem: str,
@@ -57,7 +63,6 @@ def generate_existing_alternatives(
         List[str]: A list of existing alternatives.
     """
     # Display a message in the Streamlit app
-    st.markdown("## Identifying existing alternatives..")
     
     # Invoke the agent with the problem and customer segments
     response = invoke_agent(agent, {

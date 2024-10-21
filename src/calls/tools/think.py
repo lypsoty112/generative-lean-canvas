@@ -21,16 +21,21 @@ Right now, think about this & provide a logical, well-thought out response:
 Response:
 """
 
-prompt = PromptTemplate.from_template(PROMPT)
+chain = None
+def build():
+    global chain
+    prompt = PromptTemplate.from_template(PROMPT)
 
-llm = ChatOpenAI(
-    api_key=API_KEY,
-    model="gpt-4o-mini",
-    temperature=0.3
-)
+    llm = ChatOpenAI(
+        api_key=API_KEY,
+        model="gpt-4o-mini",
+        temperature=0.3
+    )
 
 
-chain = prompt | llm
+    chain = prompt | llm
+
+
 
 @tool("think-tool", args_schema=ThinkInput)
 def think(task: str):
