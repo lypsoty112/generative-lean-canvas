@@ -14,7 +14,7 @@ def create_lean_canvas_image(problem, customer_segments, existing_alternatives, 
     draw = ImageDraw.Draw(img)
     
     # Load a font - you may need to adjust the font path and size
-    font = ImageFont.truetype(70)  # Adjust size as needed
+    font = ImageFont.truetype(size=70)  # Adjust size as needed
     
     # Define text color and border colors
     text_color = (0, 0, 0)  # Black
