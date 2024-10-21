@@ -14,7 +14,7 @@ def create_lean_canvas_image(problem, customer_segments, existing_alternatives, 
     draw = ImageDraw.Draw(img)
     
     # Load a font - you may need to adjust the font path and size
-    font = ImageFont.truetype(size=70)  # Adjust size as needed
+    font = ImageFont.truetype('./data/Inter_18pt-Regular.ttf', size=70)  # Adjust size as needed
     
     # Define text color and border colors
     text_color = (0, 0, 0)  # Black
@@ -147,11 +147,11 @@ def main():
         st.write(sections_explanations[section])
         st.session_state.form_data[section] = st.text_area(f"Enter {section}", st.session_state.form_data[section])
 
-    # Generate button
+    # Generate button   
     if st.button("Generate Lean Canvas"):
         if not st.session_state.form_data["Problem"]:
             st.toast("🚫 Error: The 'Problem' field is required.")
-        elif not st.session_state["KEY"]:
+        elif "KEY" not in st.session_state:
             st.toast("🚫 Error: No API key has been given.")
         else:
             # Call the generate method and pass in the form data
