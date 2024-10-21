@@ -38,18 +38,18 @@ def create_lean_canvas_image(problem, customer_segments, existing_alternatives, 
     
     # Define positions, max widths, and heights for each section
     sections = {
-        'problem': (500, 1800, 2500, 3200), # DONE
-        'customer_segments': (11200, 1800, 2500, 3200),  # DONE
-        'existing_alternatives': (500, 5400, 2500, 1000), # DONE
-        'solution': (3100, 1800, 2500, 2000), # DONE
-        'high_level_concept': (5800, 5600, 2500, 850), # DONE
-        'unique_value_proposition': (5800, 1800, 2500, 3000), # DONE
-        'unfair_advantage': (8500, 1800, 2500, 1700),# DONE
-        'channels': (8500, 4500, 2500, 1700), # DONE
+        'problem': (500, 1800, 2500, 3200),
+        'customer_segments': (11200, 1800, 2500, 3200),
+        'existing_alternatives': (500, 5400, 2500, 1000),
+        'solution': (3100, 1800, 2500, 2000),
+        'high_level_concept': (5800, 5600, 2500, 850),
+        'unique_value_proposition': (5800, 1800, 2500, 3000),
+        'unfair_advantage': (8500, 1800, 2500, 1700),
+        'channels': (8500, 4500, 2500, 1700),
         'early_adopters': (11200, 5400, 2500, 1000),
-        'key_metrics': (3100, 4500, 2500, 1500),# DONE
-        'cost_structure': (500, 7150, 6000, 1450), # DONE
-        'revenue_streams': (7200, 7150, 6000, 1450) # DONE
+        'key_metrics': (3100, 4500, 2500, 1500),
+        'cost_structure': (500, 7150, 6000, 1450),
+        'revenue_streams': (7200, 7150, 6000, 1450)
     }
     
     # Draw borders and add text to each section
@@ -88,9 +88,7 @@ def main():
         If you're interested in other projects of mine, go to my [GitHub](https://github.com/lypsoty112) or go to my [company's website](https://www.brevisai.com)
         """)
 
-
-    key = os.getenv("OPENAI_API_KEY", None)
-    if key is None or "KEY" not in st.session_state:
+    if "KEY" not in st.session_state:
         st.sidebar.header("⚠️ WARNING: Paste your OpenAI key first.")
         st.sidebar.write(
             "You can find or create your OpenAI API key at https://platform.openai.com/account/api-keys. This app "
@@ -99,6 +97,7 @@ def main():
         if st.sidebar.button("Upload OpenAI API key"):
             os.environ["OPENAI_API_KEY"] = key
             st.session_state["KEY"] = key
+            st.rerun()
 
     
     # Initialize session state for form inputs
@@ -118,24 +117,24 @@ def main():
             "Unfair Advantage": ""
         }
 
-    # Create input fields for each section and subcategories
+    # Show input fields only if the form has not been submitted
     st.header("Fill in your Lean Canvas")
 
     sections = [
-        "Problem", "Existing Alternatives", "Customer Segments", "Early Adopters",
-        "Unique Value Proposition", "High-level Concept", "Solution", "Channels",
+        "Problem", "Solution", "Existing Alternatives", "Customer Segments", "Early Adopters",
+        "Unique Value Proposition", "High-level Concept", "Channels",
         "Revenue Streams", "Cost Structure", "Key Metrics", "Unfair Advantage"
     ]
 
     # Explanations for each field
     sections_explanations = {
         "Problem": "What specific problem are you solving for your customers? ⚠️This is the only field that's required. The others are completely optional.",
+        "Solution": "What is your solution to the problem? Describe how your product or service solves it.",
         "Existing Alternatives": "What alternatives do your potential customers currently use to solve this problem?",
         "Customer Segments": "Who are your target customers? Define the key segments you aim to serve.",
         "Early Adopters": "Who are the first users or customers likely to use your product or service?",
         "Unique Value Proposition": "What makes your solution unique and why should customers choose you over competitors?",
         "High-level Concept": "Summarize your solution in a single, easy-to-understand sentence or phrase.",
-        "Solution": "What is your solution to the problem? Describe how your product or service solves it.",
         "Channels": "How will you reach your customers? List the key distribution channels you'll use.",
         "Revenue Streams": "How will your business make money? Define the ways you'll generate revenue.",
         "Cost Structure": "What are the main costs to operate your business? Include fixed and variable costs.",
@@ -152,7 +151,7 @@ def main():
     if st.button("Generate Lean Canvas"):
         if not st.session_state.form_data["Problem"]:
             st.error("Error: The 'Problem' field is required.")
-        elif not st.session_state.form_data["KEY"]:
+        elif not st.session_state["KEY"]:
             st.error("Error: No API key has been given.")
         else:
             # Call the generate method and pass in the form data
@@ -190,6 +189,8 @@ def main():
                 file_name="lean_canvas.png",
                 mime="image/png",
             )
+
+            # Set form as submitted
 
 
 if __name__ == "__main__":

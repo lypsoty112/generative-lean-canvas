@@ -19,19 +19,9 @@ agent = None
 
 def build():
     global agent
-    search = GoogleSerperAPIWrapper(
-            serper_api_key=SERPER_API_KEY
-        )
-
-
-
     # Initialize the tools
     tools = [
-        Tool(
-            name="search-tool",
-            func=search.run,
-            description="useful for when you need to search any information.",
-        )
+        think
     ]
 
     # Set up the language model
